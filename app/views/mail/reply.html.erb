@@ -1,0 +1,14 @@
+<%= form_for @bottle, :url => { :action => 'create_reply' } do |f| %>
+  <div class="field">
+    <%= f.text_area :body %>
+    <%= f.hidden_field :from_user %>
+    <%= f.hidden_field :to_user %>
+    <%= f.hidden_field :prev_bottle %>
+    <%= f.hidden_field :count %>
+  </div>
+  <div class="actions">
+    <%= f.submit "返信", :disable_with => "返信中..." %>
+  </div>
+<% end %>
+
+<%= link_to 'キャンセル', :action => 'index' %>

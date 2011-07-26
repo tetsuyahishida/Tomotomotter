@@ -1,0 +1,41 @@
+<p>
+  <%= current_user.name %>
+  <%= link_to "トップ", :action => 'about' %>
+  <%= link_to "ログアウトする", signout_path %>
+</p>
+
+<p>
+  <%= link_to 'メールボックス', :action => "index" %>
+  <%= link_to '送信ログ', :action => "sent" %>
+  ボトルプール
+</p>
+
+<p>
+  <%= link_to 'ボトルを作成する', :action => "new" %>
+</p>
+
+<h2>ボトルプール</h2>
+
+<% if @tomotomo_bottles == [] %>
+  <p>
+    新しいボトルはありません<br/>
+  </p>
+<% else %>
+  <table border=1 bordercolor="#777777" cellspacing="0">
+    <tr>
+      <th>メッセージ</th>
+      <th>着信時間</th>
+      <th></th>
+    </tr>
+  <% @tomotomo_bottles.each do |bottle| %>
+    <tr>
+      <td><%= truncate bottle.body %></td>
+      <td><%= mail_time(bottle.created_at) %></td>
+      <td><%= link_to '読む', :action => "show_pool", :id => bottle.id %></td>
+    </tr>
+  <% end %>
+  </table>
+<% end %>
+
+<br />
+

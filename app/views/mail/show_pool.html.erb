@@ -1,0 +1,22 @@
+<p>
+共通の友達:
+<% @common_friends.each do |name| %>
+   @<%= name %>
+<% end %>
+</p>
+<table border=1 bordercolor="#777777" cellspacing="0">
+  <tr>
+    <th>メッセージ</th>
+    <th>着信時間</th>
+  </tr>
+  <tr>
+    <td><%= @bottle.body %></td>
+    <td><%= @bottle.created_at %></td>
+  </tr>
+</table>
+
+<br />
+
+<%= link_to '返信', :action => 'reply', :prev => @prev_id %>
+<%= link_to 'キャンセル', :action => 'pool' %>
+

@@ -1,0 +1,43 @@
+<p>
+  <%= current_user.name %>
+  <%= link_to "トップ", :action => 'about' %>
+  <%= link_to "ログアウトする", signout_path %>
+</p>
+
+<p>
+  メールボックス
+  <%= link_to '送信ログ', :action => "sent" %>
+  <%= link_to 'ボトルプール', :action => "pool" %>
+</p>
+
+<p>
+  <%= link_to 'ボトルを作成する', :action => "new" %>
+</p>
+
+<h2>メールボックス</h2>
+
+<% if @to_bottles == [] %>
+  <p>
+    メッセージはありません<br/>
+  </p>
+<% else %>
+  <table border=1 bordercolor="#777777" cellspacing="0">
+    <tr>
+      <th>前のメッセージ</th>
+      <th>メッセージ</th>
+      <th>着信時間</th>
+      <th></th>
+    </tr>
+  <% @to_bottles.each do |bottle| %>
+    <tr>
+      <td><%= truncate Bottle.find(bottle.prev_bottle).body %></td>
+      <td><%= truncate bottle.body %></td>
+      <td><%= mail_time(bottle.created_at) %></td>
+      <td><%= link_to '読む', :action => "show", :id => bottle.id %></td>
+    </tr>
+  <% end %>
+  </table>
+<% end %>
+
+<br/>
+
