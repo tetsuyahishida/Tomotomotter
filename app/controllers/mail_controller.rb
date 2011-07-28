@@ -10,6 +10,10 @@ class MailController < ApplicationController
       return
     end
     @to_bottles = Bottle.inbox(current_user.uid)
+    if @to_bottles == [] && !current_user.waiting?
+      redirect_to "/mail/new"
+      return
+    end
   end
   def sent
     unless session[:user_id]
@@ -36,16 +40,6 @@ class MailController < ApplicationController
       end
     end
   end
-  def show
-    unless session[:user_id]
-      redirect_to "/mail/about"
-      return
-    end
-    @prev_id = params[:id]
-    bottle = Bottle.find(@prev_id)
-    @bottles = Bottle.reply_list(@prev_id)
-    @common_friends = current_user.common_friend_ids(bottle.to_user, bottle.from_user).map {|uid| current_user.uid_to_screen_name(uid)}
-  end
   def show_sent
     unless session[:user_id]
       redirect_to "/mail/about"
@@ -55,15 +49,6 @@ class MailController < ApplicationController
     bottle = Bottle.find(@prev_id)
     @bottles = Bottle.reply_list(@prev_id)
     @common_friends = current_user.common_friend_ids(bottle.to_user, bottle.from_user).map {|uid| current_user.uid_to_screen_name(uid)}
-  end
-  def show_pool
-    unless session[:user_id]
-      redirect_to "/mail/about"
-      return
-    end
-    @prev_id = params[:id]
-    @bottle = Bottle.find(@prev_id)
-    @common_friends = current_user.common_friend_ids(current_user.uid, @bottle.from_user).map {|uid| current_user.uid_to_screen_name(uid)}
   end
   def new
     unless session[:user_id]
@@ -75,6 +60,7 @@ class MailController < ApplicationController
     @bottle.to_user = nil
     @bottle.prev_bottle = nil
     @bottle.count = 0
+    @bottle.body = 'Tomotomotterで話そうよ！！'
   end
   def create
     bottle = Bottle.new(params[:bottle])
@@ -95,7 +81,10 @@ class MailController < ApplicationController
       redirect_to "/mail/about"
       return
     end
-    prev = Bottle.find(params[:prev])
+    @prev_id = params[:id]
+    prev = Bottle.find(@prev_id)
+    @bottles = Bottle.reply_list(@prev_id)
+    @common_friends = current_user.common_friend_ids(current_user.uid, prev.from_user).map {|uid| current_user.uid_to_screen_name(uid)}
     @bottle = Bottle.new
     @bottle.from_user = current_user.uid
     @bottle.to_user = prev.from_user

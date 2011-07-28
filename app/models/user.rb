@@ -18,6 +18,9 @@ class User < ActiveRecord::Base
     rescue Twitter::Forbidden
     end
   end
+  def waiting?
+    Bottle.where("from_user = ? AND prev_bottle IS NULL AND last_flag = ?", self.uid, true) != []
+  end
   def client
     return Twitter::Client.new(:oauth_token => self.token, :oauth_token_secret => self.secret)
   end

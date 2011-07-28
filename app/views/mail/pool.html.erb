@@ -5,13 +5,13 @@
 </p>
 
 <p>
-  <%= link_to 'メールボックス', :action => "index" %>
-  <%= link_to '送信ログ', :action => "sent" %>
-  ボトルプール
+  <%= link_to 'ボトルを作成する', :action => "new" %>
 </p>
 
 <p>
-  <%= link_to 'ボトルを作成する', :action => "new" %>
+  <%= link_to 'メールボックス', :action => "index" %>
+  <%= link_to '送信ログ', :action => "sent" %>
+  ボトルプール
 </p>
 
 <h2>ボトルプール</h2>
@@ -31,7 +31,7 @@
     <tr>
       <td><%= truncate bottle.body %></td>
       <td><%= mail_time(bottle.created_at) %></td>
-      <td><%= link_to '読む', :action => "show_pool", :id => bottle.id %></td>
+      <td><%= link_to '読む', :action => "reply", :id => bottle.id %></td>
     </tr>
   <% end %>
   </table>
